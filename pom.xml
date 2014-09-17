@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>jena-commons</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.apache.jena</groupId>
+  		<artifactId>apache-jena-libs</artifactId>
+  		<version>${jena-version}</version>
+  		<type>pom</type>
+  	</dependency>
+  	<dependency>
+			<groupId>org.xenei</groupId>
+			<artifactId>junit-contracts</artifactId>
+			<version>0.0.6-SNAPSHOT</version>
+		</dependency>
+  	<dependency>
+  		<groupId>org.apache.commons</groupId>
+  		<artifactId>commons-lang3</artifactId>
+  		<version>3.3.2</version>
+  	</dependency>
+  </dependencies>
+  <name>Apache Jena - jena-commons</name>
+  <description>Implementations of common tools to use Jena in other projects.  For example implementation of Apache Commons interfaces.</description>
+  <inceptionYear>2014</inceptionYear>
+  <organization>
+  	<name>The Apache Software Foundation</name>
+  	<url>http://www.apache.org/</url>
+  </organization>
+  <properties>
+  	<jena-version>2.12.0</jena-version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <scm>
+  	<url>https://svn.apache.org/repos/asf/jena/Experimental/jena-common/</url>
+  	<connection>scm:svn:https://svn.apache.org/repos/asf/jena/Experimental/jena-common/</connection>
+  	<developerConnection>scm:svn:https://svn.apache.org/repos/asf/jena/Experimental/jena-common/</developerConnection>
+  </scm>
+  <groupId>org.apache.jena</groupId>
+</project>
