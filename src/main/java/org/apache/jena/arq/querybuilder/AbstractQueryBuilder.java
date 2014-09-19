@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.jena.arq.querybuilder;
 
 import java.lang.reflect.Field;
@@ -39,10 +56,19 @@ import com.hp.hpl.jena.sparql.util.NodeFactoryExtra;
 public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 		implements Cloneable, PrologClause<T> {
 
+	// all queries have prologs
 	protected PrologHandler prologHandler;
+	// the query this builder is building
 	protected Query query;
+	// a map of vars to nodes for replacement during build.
 	private Map<Var, Node> values;
 
+	/**
+	 * Make a Node from an object. 
+	 * Will return null if object is null.
+	 * @param o The object to convert. (may be null)
+	 * @return The Node value or null if param was null.
+	 */
 	public Node makeNode(Object o) {
 		if (o == null) {
 			return Node.ANY;
@@ -66,12 +92,21 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 		return NodeFactory.createLiteral(LiteralLabelFactory.create(o));
 	}
 
+	/**
+	 * Create a new query builder with query.
+	 */
 	protected AbstractQueryBuilder() {
 		query = new Query();
 		prologHandler = new PrologHandler(query);
 		values = new HashMap<Var, Node>();
 	}
 
+	/**
+	 * Set a variable replacement. 
+	 * During build all instances of var in the query will be replaced with value.
+	 * @param var The variable to replace
+	 * @param value The value to replace it with.
+	 */
 	public void setVar(Var var, Node value) {
 		values.put(var, value);
 	}
@@ -120,34 +155,43 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 		return buildString();
 	}
 
+	/**
+	 * Build the query as a string.
+	 * @return the string representation of the query.
+	 */
 	public final String buildString() {
 		return build().toString();
 	}
 
+	/**
+	 * Build the query.
+	 * Performs the var replacements as specified by setVar(var,node) calls.
+	 * @return The query.
+	 */
 	public final Query build() {
 		Query q = new Query();
 		int i = query.getQueryType();
 		try {
 			Field f = Query.class.getDeclaredField("queryType");
-			f.setAccessible( true );
-			f.set( q, query.getQueryType() );
+			f.setAccessible(true);
+			f.set(q, query.getQueryType());
 		} catch (NoSuchFieldException e) {
-			throw new IllegalStateException( e.getMessage() ,e );
+			throw new IllegalStateException(e.getMessage(), e);
 		} catch (SecurityException e) {
-			throw new IllegalStateException( e.getMessage() ,e );
-		}  catch (IllegalAccessException e) {
-			throw new IllegalStateException( e.getMessage() ,e );
+			throw new IllegalStateException(e.getMessage(), e);
+		} catch (IllegalAccessException e) {
+			throw new IllegalStateException(e.getMessage(), e);
 		}
 		Stack<Handler> handlerStack = new Stack<Handler>();
 		PrologHandler ph = new PrologHandler(q);
-		handlerStack.push( ph );
+		handlerStack.push(ph);
 		ph.addAll(prologHandler);
 		ph.setVars(values);
 		if (this instanceof SelectClause) {
 			SelectHandler sh = new SelectHandler(q);
 			sh.addAll(((SelectClause<?>) this).getSelectHandler());
 			sh.setVars(values);
-			handlerStack.push( sh );
+			handlerStack.push(sh);
 		}
 		if (this instanceof ConstructClause) {
 			ConstructHandler ch = new ConstructHandler(q);
@@ -166,23 +210,31 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 			smh.addAll(((SolutionModifierClause<?>) this)
 					.getSolutionModifierHandler());
 			smh.setVars(values);
-			handlerStack.push( smh );
+			handlerStack.push(smh);
 		}
 		if (this instanceof WhereClause) {
 			WhereHandler wh = new WhereHandler(q);
 			wh.addAll(((WhereClause<?>) this).getWhereHandler());
 			wh.setVars(values);
-			handlerStack.push( wh );
+			handlerStack.push(wh);
 		}
-		
-		while ( ! handlerStack.isEmpty())
-		{
+
+		while (!handlerStack.isEmpty()) {
 			handlerStack.pop().build();
 		}
 
 		return q;
 	}
 
+	/**
+	 * Close the query.
+	 * 
+	 * This can be used when the query would not normally parse as is required by the 
+	 * Query.clone() method.
+	 * 
+	 * @param q2 The query to clone
+	 * @return A clode of the q2 param.
+	 */
 	public static Query clone(Query q2) {
 		Query retval = new Query();
 		new PrologHandler(retval).addAll(new PrologHandler(q2));
@@ -195,6 +247,12 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 		return retval;
 	}
 
+	/**
+	 * Rewrite a query replacing variables as specified in the values map.
+	 * @param q2 The query to rewrite
+	 * @param values a Mapping of var to node for replacement.
+	 * @return The new query with the specified vars replaced.
+	 */
 	public static Query rewrite(Query q2, Map<Var, Node> values) {
 		new PrologHandler(q2).setVars(values);
 		new ConstructHandler(q2).setVars(values);

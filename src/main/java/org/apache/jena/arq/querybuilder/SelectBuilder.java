@@ -1,3 +1,20 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements. See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership. The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.apache.jena.arq.querybuilder;
 
 import java.util.Collection;
@@ -11,6 +28,7 @@ import org.apache.jena.arq.querybuilder.handlers.SelectHandler;
 import org.apache.jena.arq.querybuilder.handlers.SolutionModifierHandler;
 import org.apache.jena.arq.querybuilder.handlers.WhereHandler;
 
+import com.hp.hpl.jena.graph.FrontsTriple;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -105,6 +123,12 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 	}
 
 	@Override
+	public SelectBuilder from(Collection<String> graphName) {
+		datasetHandler.from(graphName);
+		return this;
+	}
+	
+	@Override
 	public SelectBuilder addOrderBy(String orderBy) {
 		solutionModifier.addOrderBy(orderBy);
 		return this;
@@ -172,6 +196,12 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 	}
 
 	@Override
+	public SelectBuilder addWhere(FrontsTriple t) {
+		whereHandler.addWhere(t);
+		return this;
+	}
+	
+	@Override
 	public SelectBuilder addWhere(Object s, Object p, Object o) {
 		addWhere(new Triple(makeNode(s), makeNode(p), makeNode(o)));
 		return this;
@@ -183,6 +213,12 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 		return this;
 	}
 
+	@Override
+	public SelectBuilder addOptional(FrontsTriple t) {
+		whereHandler.addOptional(t);
+		return this;
+	}
+	
 	@Override
 	public SelectBuilder addOptional(Object s, Object p, Object o) {
 		addOptional(new Triple(makeNode(s), makeNode(p), makeNode(o)));
@@ -208,6 +244,7 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 		return this;
 	}
 
+	@Override
 	public SelectBuilder addGraph(Object graph, SelectBuilder subQuery) {
 		prologHandler.addAll(subQuery.prologHandler);
 		whereHandler.addGraph(makeNode(graph), subQuery.whereHandler);
