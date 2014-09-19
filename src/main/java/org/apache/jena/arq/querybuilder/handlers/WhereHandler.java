@@ -85,8 +85,8 @@ public class WhereHandler implements Handler {
 				|| t.getSubject().equals(Node.ANY);
 		boolean validObject = t.getObject().isURI()
 				|| t.getObject().isLiteral() || t.getObject().isBlank()
-				|| t.getSubject().isVariable()
-				|| t.getSubject().equals(Node.ANY);
+				|| t.getObject().isVariable()
+				|| t.getObject().equals(Node.ANY);
 
 		if (!validSubject || !validPredicate || !validObject) {
 			StringBuilder sb = new StringBuilder();
