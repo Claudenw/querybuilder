@@ -1,6 +1,9 @@
 package org.apache.jena.arq.querybuilder.handlers;
 
 import static org.junit.Assert.*;
+
+import java.lang.reflect.Field;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +32,24 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 		assertTrue(expr.contains(v));
 	}
 
+	@Test
+	public void testAddVarAsterisk() {
+		handler.addVar("*");
+		VarExprList expr = query.getProject();
+		assertEquals(0, expr.size());
+		assertTrue( query.isQueryResultStar());
+	}
+	
+	@Test
+	public void testAddVarAfterAsterisk() {
+		handler.addVar("*");
+		handler.addVar( "?x" );
+		VarExprList expr = query.getProject();
+		assertEquals(1, expr.size());
+		assertFalse( query.isQueryResultStar());
+		assertTrue(expr.contains( Var.alloc( "x" )));
+	}
+	
 	@Test
 	public void testAddVarNode() {
 		Var v = Var.alloc("one");
@@ -101,12 +122,26 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 	}
 
 	@Test
-	public void testAddAll() {
-		// handler.setBase("foo");
-		// handler.addPrefix("pfx", "uri");
-		// String[] lst = byLine(query.toString());
-		// assertContainsRegex("PREFIX\\s+pfx:\\s+\\<uri\\>", lst);
-		// assertContainsRegex("BASE\\s+\\<.+/foo\\>", lst);
+	public void testAddAllResultStartReduced() {
+		SelectHandler sh = new SelectHandler( new Query() );
+		sh.addVar( "*" );
+		sh.setReduced(true);
+		
+		handler.addAll( sh );
+		assertTrue( query.isReduced() );
+		assertTrue( query.isQueryResultStar() );
 	}
-
+		
+	@Test
+	public void testAddAllVarsDistinct() {
+		SelectHandler sh = new SelectHandler( new Query() );
+		sh.addVar( "?foo" );
+		sh.setDistinct(true);
+		
+		handler.addAll( sh );
+		assertTrue( query.isDistinct() );
+		assertFalse( query.isQueryResultStar() );
+		assertEquals( 1, query.getResultVars().size() );
+	}
+		
 }

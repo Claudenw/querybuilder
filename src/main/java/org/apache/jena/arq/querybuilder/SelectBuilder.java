@@ -28,7 +28,7 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 
 	public SelectBuilder() {
 		super();
-		query.setQueryConstructType();
+		query.setQuerySelectType();
 		datasetHandler = new DatasetHandler(query);
 		whereHandler = new WhereHandler(query);
 		solutionModifier = new SolutionModifierHandler(query);

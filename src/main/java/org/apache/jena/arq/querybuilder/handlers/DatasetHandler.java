@@ -82,4 +82,10 @@ public class DatasetHandler implements Handler {
 		setVars( values, "graphURIs");
 	}
 
+	@Override
+	public void build() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

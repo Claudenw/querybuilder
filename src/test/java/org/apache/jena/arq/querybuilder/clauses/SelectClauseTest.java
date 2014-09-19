@@ -126,7 +126,6 @@ public class SelectClauseTest<T extends SelectClause<?>> extends
 	public void testAddVarVar() throws Exception {
 		Var v = Var.alloc("one");
 		SelectClause<?> selectClause = getProducer().newInstance();
-		selectClause.addVar("one");
 		Query query = getQuery(selectClause.addVar(v));
 		VarExprList expr = query.getProject();
 		assertEquals(1, expr.size());
@@ -139,6 +138,16 @@ public class SelectClauseTest<T extends SelectClause<?>> extends
 		AbstractQueryBuilder<?> builder = selectClause.addVar(NodeFactory
 				.createVariable("foo"));
 		String[] s = byLine(builder);
+	}
+	
+	@ContractTest
+	public void testAddVarAsterisk() throws Exception {
+		SelectClause<?> selectClause = getProducer().newInstance();
+		selectClause.addVar("*");
+		Query query = getQuery(selectClause.addVar( "*" ));
+		VarExprList expr = query.getProject();
+		assertEquals(0, expr.size());
+		assertTrue( query.isQueryResultStar() );
 	}
 
 }

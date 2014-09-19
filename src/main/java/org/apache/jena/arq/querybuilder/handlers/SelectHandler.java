@@ -7,11 +7,11 @@ import java.util.Map;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.sparql.core.Var;
+import com.hp.hpl.jena.sparql.core.VarExprList;
 
 public class SelectHandler implements Handler {
 
 	private final Query query;
-	private String distinctOrReduced;
 
 	public SelectHandler(Query query) {
 		this.query = query;
@@ -23,28 +23,26 @@ public class SelectHandler implements Handler {
 		query.setDistinct(state);
 		if (state) {
 			query.setReduced(false);
-		} else {
-			if ("DISTINCT".equals(distinctOrReduced)) {
-				distinctOrReduced = null;
-			}
-		}
-
+		} 
 	}
 
 	public void setReduced(boolean state) {
 		query.setReduced(state);
 		if (state) {
-			distinctOrReduced = "REDUCED";
 			query.setDistinct(false);
-		} else {
-			if ("REDUCED".equals(distinctOrReduced)) {
-				distinctOrReduced = null;
-			}
 		}
 	}
 
 	public void addVar(String var) {
-		query.addResultVar(var);
+		if ("*".equals(var))
+		{
+			query.setQueryResultStar(true);
+		}
+		else
+		{
+			query.setQueryResultStar(false);
+			query.addResultVar(var);
+		}
 	}
 
 	public void addVar(Var var) {
@@ -60,14 +58,16 @@ public class SelectHandler implements Handler {
 	}
 
 	public void addAll(SelectHandler selectHandler) {
-		if (selectHandler.distinctOrReduced != null) {
-			distinctOrReduced = selectHandler.distinctOrReduced;
-		}
+
+		setReduced( selectHandler.query.isReduced() );
+		setDistinct( selectHandler.query.isDistinct());
+		query.setQueryResultStar( selectHandler.query.isQueryResultStar() );
 
 		try {
 			Field f = Query.class.getDeclaredField("projectVars");
 			f.setAccessible(true);
-			f.set(query, f.get(selectHandler.query));
+			VarExprList projectVars = (VarExprList)f.get(selectHandler.query);
+			f.set(query, new VarExprList(projectVars));
 		} catch (NoSuchFieldException e) {
 			throw new IllegalStateException(e);
 		} catch (SecurityException e) {
@@ -80,5 +80,10 @@ public class SelectHandler implements Handler {
 	@Override
 	public void setVars(Map<Var, Node> values) {
 		// nothing to do
+	}
+	
+	public void build() {
+		// handle the SELECT * case
+		query.getProjectVars();
 	}
 }

@@ -7,4 +7,5 @@ import com.hp.hpl.jena.sparql.core.Var;
 
 public interface Handler {
 	public void setVars(Map<Var, Node> values);
+	public void build();
 }

@@ -134,7 +134,7 @@ public class WhereClauseTest<T extends WhereClause<?>> extends
 		AbstractQueryBuilder<?> builder = whereClause.addSubQuery(sb);
 
 		assertContainsRegex(PREFIX + "pfx:" + SPACE + node("urn:uri") + SPACE
-				+ WHERE + OPEN_CURLY + OPEN_CURLY + SELECT + var("x") + SPACE
+				+ ".*" + WHERE + OPEN_CURLY + OPEN_CURLY + SELECT + var("x") + SPACE
 				+ WHERE + OPEN_CURLY + "pfx:one" + SPACE + "pfx:two" + SPACE
 				+ "pfx:three" + OPT_SPACE + DOT + CLOSE_CURLY,
 				builder.buildString());

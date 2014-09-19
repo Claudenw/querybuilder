@@ -158,4 +158,10 @@ public class SolutionModifierHandler implements Handler {
 		}
 
 	}
+
+	@Override
+	public void build() {
+		// TODO Auto-generated method stub
+		
+	}
 }

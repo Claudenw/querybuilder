@@ -51,4 +51,10 @@ public class PrologHandler implements Handler {
 	public void setVars(Map<Var, Node> values) {
 		// nothing to do
 	}
+
+	@Override
+	public void build() {
+		// TODO Auto-generated method stub
+		
+	}
 }

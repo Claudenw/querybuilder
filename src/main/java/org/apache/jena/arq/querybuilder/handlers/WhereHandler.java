@@ -234,4 +234,10 @@ public class WhereHandler implements Handler {
 			query.setQueryPattern(r.getResult());
 		}
 	}
+
+	@Override
+	public void build() {
+		// TODO Auto-generated method stub
+		
+	}
 }

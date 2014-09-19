@@ -1,7 +1,9 @@
 package org.apache.jena.arq.querybuilder;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import org.apache.jena.arq.querybuilder.clauses.ConstructClause;
 import org.apache.jena.arq.querybuilder.clauses.DatasetClause;
@@ -11,6 +13,7 @@ import org.apache.jena.arq.querybuilder.clauses.SolutionModifierClause;
 import org.apache.jena.arq.querybuilder.clauses.WhereClause;
 import org.apache.jena.arq.querybuilder.handlers.ConstructHandler;
 import org.apache.jena.arq.querybuilder.handlers.DatasetHandler;
+import org.apache.jena.arq.querybuilder.handlers.Handler;
 import org.apache.jena.arq.querybuilder.handlers.PrologHandler;
 import org.apache.jena.arq.querybuilder.handlers.SelectHandler;
 import org.apache.jena.arq.querybuilder.handlers.SolutionModifierHandler;
@@ -123,34 +126,58 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 
 	public final Query build() {
 		Query q = new Query();
+		int i = query.getQueryType();
+		try {
+			Field f = Query.class.getDeclaredField("queryType");
+			f.setAccessible( true );
+			f.set( q, query.getQueryType() );
+		} catch (NoSuchFieldException e) {
+			throw new IllegalStateException( e.getMessage() ,e );
+		} catch (SecurityException e) {
+			throw new IllegalStateException( e.getMessage() ,e );
+		}  catch (IllegalAccessException e) {
+			throw new IllegalStateException( e.getMessage() ,e );
+		}
+		Stack<Handler> handlerStack = new Stack<Handler>();
 		PrologHandler ph = new PrologHandler(q);
+		handlerStack.push( ph );
 		ph.addAll(prologHandler);
 		ph.setVars(values);
 		if (this instanceof SelectClause) {
 			SelectHandler sh = new SelectHandler(q);
 			sh.addAll(((SelectClause<?>) this).getSelectHandler());
 			sh.setVars(values);
+			handlerStack.push( sh );
 		}
 		if (this instanceof ConstructClause) {
 			ConstructHandler ch = new ConstructHandler(q);
 			ch.addAll(((ConstructClause<?>) this).getConstructHandler());
 			ch.setVars(values);
+			handlerStack.push(ch);
 		}
 		if (this instanceof DatasetClause) {
 			DatasetHandler dh = new DatasetHandler(q);
 			dh.addAll(((DatasetClause<?>) this).getDatasetHandler());
 			dh.setVars(values);
+			handlerStack.push(dh);
 		}
 		if (this instanceof SolutionModifierClause) {
 			SolutionModifierHandler smh = new SolutionModifierHandler(q);
 			smh.addAll(((SolutionModifierClause<?>) this)
 					.getSolutionModifierHandler());
 			smh.setVars(values);
+			handlerStack.push( smh );
 		}
 		if (this instanceof WhereClause) {
 			WhereHandler wh = new WhereHandler(q);
 			wh.addAll(((WhereClause<?>) this).getWhereHandler());
 			wh.setVars(values);
+			handlerStack.push( wh );
+		}
+		
+		while ( ! handlerStack.isEmpty())
+		{
+			handlerStack.pop().build();
 		}
 
 		return q;

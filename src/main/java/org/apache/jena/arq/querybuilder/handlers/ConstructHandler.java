@@ -48,4 +48,10 @@ public class ConstructHandler implements Handler {
 				.rewrite(constructs))));
 	}
 
+	@Override
+	public void build() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
