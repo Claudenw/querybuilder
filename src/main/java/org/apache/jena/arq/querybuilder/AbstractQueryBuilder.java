@@ -233,7 +233,7 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 	 * Query.clone() method.
 	 * 
 	 * @param q2 The query to clone
-	 * @return A clode of the q2 param.
+	 * @return A clone of the q2 param.
 	 */
 	public static Query clone(Query q2) {
 		Query retval = new Query();
