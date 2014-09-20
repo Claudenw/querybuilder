@@ -23,36 +23,45 @@ import org.apache.jena.arq.querybuilder.AbstractQueryBuilder;
 import org.apache.jena.arq.querybuilder.handlers.DatasetHandler;
 
 /**
- * Interface that defines the DatasetClause as per 
+ * Interface that defines the DatasetClause as per
  * http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rDatasetClause
- *
- * @param <T> The Builder type that the clause is part of.
+ * 
+ * @param <T>
+ *            The Builder type that the clause is part of.
  */
 public interface DatasetClause<T extends AbstractQueryBuilder<T>> {
 	/**
-	 * Add the  "FROM NAMED" graph name.
-	 * @param graphName the graph name to add.
+	 * Add the "FROM NAMED" graph name.
+	 * 
+	 * @param graphName
+	 *            the graph name to add.
 	 * @return The builder for chaining.
 	 */
 	public T fromNamed(String graphName);
 
 	/**
 	 * Add several "FROM NAMED" graph names.
-	 * @param graphName the collection graph names to add.
+	 * 
+	 * @param graphName
+	 *            the collection graph names to add.
 	 * @return The builder for chaining.
 	 */
 	public T fromNamed(Collection<String> graphNames);
 
 	/**
-	 * Add the  "FROM" graph name.
-	 * @param graphName the graph name to add.
+	 * Add the "FROM" graph name.
+	 * 
+	 * @param graphName
+	 *            the graph name to add.
 	 * @return The builder for chaining.
 	 */
 	public T from(String graphName);
-	
+
 	/**
 	 * Add several "FROM" graph names.
-	 * @param graphName the collection graph names to add.
+	 * 
+	 * @param graphName
+	 *            the collection graph names to add.
 	 * @return The builder for chaining.
 	 */
 	public T from(Collection<String> graphName);

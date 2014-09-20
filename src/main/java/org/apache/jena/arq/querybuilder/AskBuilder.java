@@ -32,7 +32,7 @@ import com.hp.hpl.jena.sparql.lang.sparql_11.ParseException;
 
 /**
  * Build an ASK query.
- *
+ * 
  */
 public class AskBuilder extends AbstractQueryBuilder<AskBuilder> implements
 		DatasetClause<AskBuilder>, WhereClause<AskBuilder>,
@@ -97,7 +97,7 @@ public class AskBuilder extends AbstractQueryBuilder<AskBuilder> implements
 		datasetHandler.from(graphName);
 		return this;
 	}
-	
+
 	@Override
 	public AskBuilder addWhere(Triple t) {
 		whereHandler.addWhere(t);
@@ -109,7 +109,7 @@ public class AskBuilder extends AbstractQueryBuilder<AskBuilder> implements
 		whereHandler.addWhere(t.asTriple());
 		return this;
 	}
-	
+
 	@Override
 	public AskBuilder addWhere(Object s, Object p, Object o) {
 		addWhere(new Triple(makeNode(s), makeNode(p), makeNode(o)));
@@ -127,6 +127,7 @@ public class AskBuilder extends AbstractQueryBuilder<AskBuilder> implements
 		whereHandler.addOptional(t.asTriple());
 		return this;
 	}
+
 	@Override
 	public AskBuilder addOptional(Object s, Object p, Object o) {
 		addOptional(new Triple(makeNode(s), makeNode(p), makeNode(o)));

@@ -89,7 +89,7 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 
 	@Override
 	public SelectBuilder addVar(Object var) {
-		selectHandler.addVar( makeVar( var ));
+		selectHandler.addVar(makeVar(var));
 		return this;
 	}
 
@@ -121,7 +121,7 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 		datasetHandler.from(graphName);
 		return this;
 	}
-	
+
 	@Override
 	public SelectBuilder addOrderBy(String orderBy) {
 		solutionModifier.addOrderBy(orderBy);
@@ -194,7 +194,7 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 		whereHandler.addWhere(t.asTriple());
 		return this;
 	}
-	
+
 	@Override
 	public SelectBuilder addWhere(Object s, Object p, Object o) {
 		addWhere(new Triple(makeNode(s), makeNode(p), makeNode(o)));
@@ -212,7 +212,7 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 		whereHandler.addOptional(t.asTriple());
 		return this;
 	}
-	
+
 	@Override
 	public SelectBuilder addOptional(Object s, Object p, Object o) {
 		addOptional(new Triple(makeNode(s), makeNode(p), makeNode(o)));

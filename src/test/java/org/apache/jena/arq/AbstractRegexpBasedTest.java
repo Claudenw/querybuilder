@@ -42,7 +42,7 @@ public abstract class AbstractRegexpBasedTest {
 	protected static final String UNION = "UNION" + SPACE;
 	protected static final String LIMIT = "LIMIT" + SPACE;
 	protected static final String OFFSET = "OFFSET" + SPACE;
-	protected static final String OPTIONAL = "OPTIONAL"+SPACE;
+	protected static final String OPTIONAL = "OPTIONAL" + SPACE;
 
 	protected final String quote(String s) {
 		return String.format("%s%s%s", QUOTE, s, QUOTE);

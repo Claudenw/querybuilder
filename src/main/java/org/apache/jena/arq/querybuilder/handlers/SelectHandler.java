@@ -51,8 +51,7 @@ public class SelectHandler implements Handler {
 	}
 
 	public void addVar(Var var) {
-		if (var == null)
-		{
+		if (var == null) {
 			query.setQueryResultStar(true);
 		} else {
 			query.setQueryResultStar(false);
@@ -91,8 +90,7 @@ public class SelectHandler implements Handler {
 
 	@Override
 	public void build() {
-		if (query.getProject().getVars().isEmpty())
-		{
+		if (query.getProject().getVars().isEmpty()) {
 			query.setQueryResultStar(true);
 		}
 		// handle the SELECT * case

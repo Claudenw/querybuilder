@@ -65,9 +65,10 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 	private Map<Var, Node> values;
 
 	/**
-	 * Make a Node from an object. 
-	 * Will return Node.ANY if object is null.
-	 * @param o The object to convert. (may be null)
+	 * Make a Node from an object. Will return Node.ANY if object is null.
+	 * 
+	 * @param o
+	 *            The object to convert. (may be null)
 	 * @return The Node value.
 	 */
 	public Node makeNode(Object o) {
@@ -92,37 +93,33 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 		}
 		return NodeFactory.createLiteral(LiteralLabelFactory.create(o));
 	}
-	
+
 	/**
-	 * Make a Var from an object.
-	 * Will return Var.ANON if object is null.
-	 * Will return null if the object is "*"
-	 * @param o The object to convert.
+	 * Make a Var from an object. Will return Var.ANON if object is null. Will
+	 * return null if the object is "*"
+	 * 
+	 * @param o
+	 *            The object to convert.
 	 * @return the Var value.
 	 */
 	public Var makeVar(Object o) {
 		if (o == null) {
 			return Var.ANON;
 		}
-		if (o instanceof Var)
-		{
+		if (o instanceof Var) {
 			return (Var) o;
 		}
 		Var retval = null;
 		if (o instanceof FrontsNode) {
 			retval = Var.alloc(((FrontsNode) o).asNode());
-		} else
-		if (o instanceof Node) {
+		} else if (o instanceof Node) {
 			retval = Var.alloc((Node) o);
-		} else
-		if (o instanceof ExprVar) {
-			retval = Var.alloc((ExprVar)o);
-		} else
-		{
-			retval = Var.alloc( Var.canonical( o.toString() ));
+		} else if (o instanceof ExprVar) {
+			retval = Var.alloc((ExprVar) o);
+		} else {
+			retval = Var.alloc(Var.canonical(o.toString()));
 		}
-		if ("*".equals( Var.canonical(retval.toString())))
-		{
+		if ("*".equals(Var.canonical(retval.toString()))) {
 			return null;
 		}
 		return retval;
@@ -138,41 +135,42 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 	}
 
 	/**
-	 * Set a variable replacement. 
-	 * During build all instances of var in the query will be replaced with value.
-	 * If value is null the replacement is cleared.
-	 * @param var The variable to replace
-	 * @param value The value to replace it with or null to remove the replacement.
+	 * Set a variable replacement. During build all instances of var in the
+	 * query will be replaced with value. If value is null the replacement is
+	 * cleared.
+	 * 
+	 * @param var
+	 *            The variable to replace
+	 * @param value
+	 *            The value to replace it with or null to remove the
+	 *            replacement.
 	 */
 	public void setVar(Var var, Node value) {
-		if (value == null)
-		{
+		if (value == null) {
 			values.remove(var);
-		}
-		else
-		{
+		} else {
 			values.put(var, value);
 		}
 	}
-	
+
 	/**
-	 * Set a variable replacement. 
-	 * During build all instances of var in the query will be replaced with value.
-	 * If value is null the replacement is cleared.
+	 * Set a variable replacement. During build all instances of var in the
+	 * query will be replaced with value. If value is null the replacement is
+	 * cleared.
+	 * 
 	 * @See makeVar();
 	 * @See makeNode();
-	 * @param var The variable to replace.
-	 * @param value The value to replace it with or null to remove the replacement.
+	 * @param var
+	 *            The variable to replace.
+	 * @param value
+	 *            The value to replace it with or null to remove the
+	 *            replacement.
 	 */
-	public void setVar( Object var, Object value )
-	{
-		if (value == null)
-		{
-			setVar( makeVar( var ), null);
-		}
-		else
-		{
-			setVar( makeVar(var), makeNode( value ) );
+	public void setVar(Object var, Object value) {
+		if (value == null) {
+			setVar(makeVar(var), null);
+		} else {
+			setVar(makeVar(var), makeNode(value));
 		}
 	}
 
@@ -222,6 +220,7 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 
 	/**
 	 * Build the query as a string.
+	 * 
 	 * @return the string representation of the query.
 	 */
 	public final String buildString() {
@@ -229,8 +228,9 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 	}
 
 	/**
-	 * Build the query.
-	 * Performs the var replacements as specified by setVar(var,node) calls.
+	 * Build the query. Performs the var replacements as specified by
+	 * setVar(var,node) calls.
+	 * 
 	 * @return The query.
 	 */
 	public final Query build() {
@@ -294,10 +294,11 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 	/**
 	 * Close the query.
 	 * 
-	 * This can be used when the query would not normally parse as is required by the 
-	 * Query.clone() method.
+	 * This can be used when the query would not normally parse as is required
+	 * by the Query.clone() method.
 	 * 
-	 * @param q2 The query to clone
+	 * @param q2
+	 *            The query to clone
 	 * @return A clone of the q2 param.
 	 */
 	public static Query clone(Query q2) {
@@ -314,8 +315,11 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 
 	/**
 	 * Rewrite a query replacing variables as specified in the values map.
-	 * @param q2 The query to rewrite
-	 * @param values a Mapping of var to node for replacement.
+	 * 
+	 * @param q2
+	 *            The query to rewrite
+	 * @param values
+	 *            a Mapping of var to node for replacement.
 	 * @return The new query with the specified vars replaced.
 	 */
 	public static Query rewrite(Query q2, Map<Var, Node> values) {

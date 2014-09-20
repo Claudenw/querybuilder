@@ -34,13 +34,12 @@ public class PrologHandler implements Handler {
 		this.query = query;
 	}
 
-	private String canonicalPfx(String x)
-    {
-        if ( x.endsWith(":") )
-            return x.substring(0, x.length()-2) ;
-        return x ;
-    }
-	
+	private String canonicalPfx(String x) {
+		if (x.endsWith(":"))
+			return x.substring(0, x.length() - 2);
+		return x;
+	}
+
 	public void setBase(IRIResolver resolver) {
 		query.setBaseURI(resolver);
 
@@ -55,9 +54,8 @@ public class PrologHandler implements Handler {
 	}
 
 	public void addPrefixes(Map<String, String> prefixes) {
-		for (Map.Entry<String,String> e : prefixes.entrySet() )
-		{
-			addPrefix( e.getKey(), e.getValue());
+		for (Map.Entry<String, String> e : prefixes.entrySet()) {
+			addPrefix(e.getKey(), e.getValue());
 		}
 	}
 

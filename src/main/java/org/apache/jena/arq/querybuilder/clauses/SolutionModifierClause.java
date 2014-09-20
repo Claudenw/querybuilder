@@ -23,30 +23,37 @@ import org.apache.jena.arq.querybuilder.handlers.SolutionModifierHandler;
 import com.hp.hpl.jena.sparql.lang.sparql_11.ParseException;
 
 /**
- * Interface that defines the SolutionClause as per 
+ * Interface that defines the SolutionClause as per
  * http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rSolutionModifier
- *
- * @param <T> The Builder type that the clause is part of.
+ * 
+ * @param <T>
+ *            The Builder type that the clause is part of.
  */
 public interface SolutionModifierClause<T extends AbstractQueryBuilder<T>> {
 
 	/**
 	 * Add an order by
-	 * @param orderBy The variable name to order by.
+	 * 
+	 * @param orderBy
+	 *            The variable name to order by.
 	 * @return The builder for chaining.
 	 */
 	public T addOrderBy(String orderBy);
 
 	/**
 	 * Add a group by
-	 * @param groupBy The variable name to group by.
+	 * 
+	 * @param groupBy
+	 *            The variable name to group by.
 	 * @return The builder for chaining.
 	 */
 	public T addGroupBy(String groupBy);
 
 	/**
 	 * Add a having expression.
-	 * @param expression Expression to evaluate for the having.
+	 * 
+	 * @param expression
+	 *            Expression to evaluate for the having.
 	 * @return The builder for chaining.
 	 */
 	public T addHaving(String expression) throws ParseException;
@@ -55,7 +62,9 @@ public interface SolutionModifierClause<T extends AbstractQueryBuilder<T>> {
 	 * Set the limit.
 	 * 
 	 * Setting the limit to 0 (zero) sets no limit.
-	 * @param limit the maximum number of results to return.
+	 * 
+	 * @param limit
+	 *            the maximum number of results to return.
 	 * @return The builder for chaining.
 	 */
 	public T setLimit(int limit);
@@ -64,7 +73,9 @@ public interface SolutionModifierClause<T extends AbstractQueryBuilder<T>> {
 	 * Set the offset.
 	 * 
 	 * Setting the offset to 0 (zero) sets no offset.
-	 * @param offset the number of results to skip before returning results..
+	 * 
+	 * @param offset
+	 *            the number of results to skip before returning results..
 	 * @return The builder for chaining.
 	 */
 	public T setOffset(int offset);

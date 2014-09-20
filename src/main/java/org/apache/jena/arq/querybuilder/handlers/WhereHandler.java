@@ -28,8 +28,6 @@ import org.apache.jena.arq.querybuilder.clauses.DatasetClause;
 import org.apache.jena.arq.querybuilder.clauses.SolutionModifierClause;
 import org.apache.jena.arq.querybuilder.clauses.WhereClause;
 import org.apache.jena.arq.querybuilder.rewriters.ElementRewriter;
-import com.hp.hpl.jena.graph.FrontsNode;
-import com.hp.hpl.jena.graph.FrontsTriple;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;

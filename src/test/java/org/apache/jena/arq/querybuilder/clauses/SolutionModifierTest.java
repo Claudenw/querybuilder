@@ -19,18 +19,13 @@ package org.apache.jena.arq.querybuilder.clauses;
 
 import static org.junit.Assert.assertFalse;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.jena.arq.querybuilder.AbstractQueryBuilder;
 import org.apache.jena.arq.querybuilder.clauses.SolutionModifierClause;
 import org.junit.After;
-import org.junit.Test;
 import org.xenei.junit.contract.Contract;
 import org.xenei.junit.contract.ContractTest;
 import org.xenei.junit.contract.IProducer;
 
-import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.sparql.core.Var;
 import com.hp.hpl.jena.sparql.lang.sparql_11.ParseException;
 
@@ -133,51 +128,48 @@ public class SolutionModifierTest<T extends SolutionModifierClause<?>> extends
 	}
 
 	@ContractTest
-	public void testSetVarsGroupBy()
-	{
-		Var v = Var.alloc( "v");
+	public void testSetVarsGroupBy() {
+		Var v = Var.alloc("v");
 		SolutionModifierClause<?> solutionModifier = getProducer()
 				.newInstance();
-		AbstractQueryBuilder<?> builder = solutionModifier.addGroupBy( "?v" );
-		
+		AbstractQueryBuilder<?> builder = solutionModifier.addGroupBy("?v");
+
 		String[] s = byLine(builder);
-		assertContainsRegex(GROUP_BY+var("v"), s);
-	
-		builder.setVar( v, Var.alloc( "v2" ));
+		assertContainsRegex(GROUP_BY + var("v"), s);
+
+		builder.setVar(v, Var.alloc("v2"));
 		s = byLine(builder);
-		assertContainsRegex(GROUP_BY+var("v2"), s);
+		assertContainsRegex(GROUP_BY + var("v2"), s);
 	}
 
 	@ContractTest
-	public void testSetVarsHaving() throws ParseException
-	{
-		Var v = Var.alloc( "v");
+	public void testSetVarsHaving() throws ParseException {
+		Var v = Var.alloc("v");
 		SolutionModifierClause<?> solutionModifier = getProducer()
 				.newInstance();
-		AbstractQueryBuilder<?> builder = solutionModifier.addHaving( "?v" );
-		
+		AbstractQueryBuilder<?> builder = solutionModifier.addHaving("?v");
+
 		String[] s = byLine(builder);
-		assertContainsRegex(HAVING+var("v"), s);
-	
-		builder.setVar( v, Var.alloc( "v2" ));
+		assertContainsRegex(HAVING + var("v"), s);
+
+		builder.setVar(v, Var.alloc("v2"));
 		s = byLine(builder);
-		assertContainsRegex(HAVING+var("v2"), s);
+		assertContainsRegex(HAVING + var("v2"), s);
 	}
-	
+
 	@ContractTest
-	public void testSetVarsOrderBy()
-	{
-		Var v = Var.alloc( "v");
+	public void testSetVarsOrderBy() {
+		Var v = Var.alloc("v");
 		SolutionModifierClause<?> solutionModifier = getProducer()
 				.newInstance();
-		AbstractQueryBuilder<?> builder = solutionModifier.addOrderBy( "?v" );
-		
+		AbstractQueryBuilder<?> builder = solutionModifier.addOrderBy("?v");
+
 		String[] s = byLine(builder);
-		assertContainsRegex(ORDER_BY+var("v"), s);
-	
-		builder.setVar( v, Var.alloc( "v2" ));
+		assertContainsRegex(ORDER_BY + var("v"), s);
+
+		builder.setVar(v, Var.alloc("v2"));
 		s = byLine(builder);
-		assertContainsRegex(ORDER_BY+var("v2"), s);
+		assertContainsRegex(ORDER_BY + var("v2"), s);
 	}
 
 }

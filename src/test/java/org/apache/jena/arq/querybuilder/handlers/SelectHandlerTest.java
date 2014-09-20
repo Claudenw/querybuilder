@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.sparql.core.Var;
 import com.hp.hpl.jena.sparql.core.VarExprList;
@@ -65,7 +64,6 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 		assertTrue(expr.contains(Var.alloc("x")));
 	}
 
-	
 	@Test
 	public void testAddVarVar() {
 		Var v = Var.alloc("one");
@@ -131,7 +129,7 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 	@Test
 	public void testAddAllResultStartReduced() {
 		SelectHandler sh = new SelectHandler(new Query());
-		sh.addVar( null );
+		sh.addVar(null);
 		sh.setReduced(true);
 
 		handler.addAll(sh);
@@ -142,7 +140,7 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 	@Test
 	public void testAddAllVarsDistinct() {
 		SelectHandler sh = new SelectHandler(new Query());
-		sh.addVar( Var.alloc("foo"));
+		sh.addVar(Var.alloc("foo"));
 		sh.setDistinct(true);
 
 		handler.addAll(sh);

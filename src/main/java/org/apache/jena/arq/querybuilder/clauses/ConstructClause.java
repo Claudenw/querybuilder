@@ -24,32 +24,41 @@ import com.hp.hpl.jena.graph.FrontsTriple;
 import com.hp.hpl.jena.graph.Triple;
 
 /**
- * Interface that defines the ConstructClause as per 
+ * Interface that defines the ConstructClause as per
  * http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rConstructTemplate
- *
- * @param <T> The Builder type that the clause is part of.
+ * 
+ * @param <T>
+ *            The Builder type that the clause is part of.
  */
 public interface ConstructClause<T extends AbstractQueryBuilder<T>> {
 
 	/**
 	 * Add a construct triple.
-	 * @param t The triple to add.
+	 * 
+	 * @param t
+	 *            The triple to add.
 	 * @return The builder for chaining.
 	 */
 	public T addConstruct(Triple t);
 
 	/**
 	 * Add a construct triple.
-	 * @param t The triple to add.
+	 * 
+	 * @param t
+	 *            The triple to add.
 	 * @return The builder for chaining.
 	 */
 	public T addConstruct(FrontsTriple t);
 
 	/**
 	 * Add a construct triple.
-	 * @param s The subject of the triple,
-	 * @param p The predicate of the triple.
-	 * @param o The object of the triple.
+	 * 
+	 * @param s
+	 *            The subject of the triple,
+	 * @param p
+	 *            The predicate of the triple.
+	 * @param o
+	 *            The object of the triple.
 	 * @return the builder for chaining.
 	 */
 	public T addConstruct(Object s, Object p, Object o);

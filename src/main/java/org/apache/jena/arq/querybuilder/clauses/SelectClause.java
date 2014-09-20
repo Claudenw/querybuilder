@@ -24,10 +24,11 @@ import org.apache.jena.arq.querybuilder.handlers.SelectHandler;
 import com.hp.hpl.jena.sparql.core.Var;
 
 /**
- * Interface that defines the SelectClause as per 
+ * Interface that defines the SelectClause as per
  * http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rSelectClause
- *
- * @param <T> The Builder type that the clause is part of.
+ * 
+ * @param <T>
+ *            The Builder type that the clause is part of.
  */
 public interface SelectClause<T extends AbstractQueryBuilder<T>> {
 	/**
@@ -40,7 +41,8 @@ public interface SelectClause<T extends AbstractQueryBuilder<T>> {
 	 * 
 	 * Setting the select distinct will unset reduced if it was set.
 	 * 
-	 * @param state if true results will be distinct.
+	 * @param state
+	 *            if true results will be distinct.
 	 * @return The builder for chaining.
 	 */
 	public T setDistinct(boolean state);
@@ -50,7 +52,8 @@ public interface SelectClause<T extends AbstractQueryBuilder<T>> {
 	 * 
 	 * Setting the select reduced will unset distinct if it was set.
 	 * 
-	 * @param state if true results will be reduced.
+	 * @param state
+	 *            if true results will be reduced.
 	 * @return The builder for chaining.
 	 */
 	public T setReduced(boolean state);
@@ -58,10 +61,11 @@ public interface SelectClause<T extends AbstractQueryBuilder<T>> {
 	/**
 	 * Add a variable to the select statement.
 	 * 
-	 * A variable may only be added once.  Attempting to add the same variable multiple times
-	 * will be silently ignored.
+	 * A variable may only be added once. Attempting to add the same variable
+	 * multiple times will be silently ignored.
 	 * 
-	 * @param var The variable to add.
+	 * @param var
+	 *            The variable to add.
 	 * @return The builder for chaining.
 	 */
 	public T addVar(Object var);

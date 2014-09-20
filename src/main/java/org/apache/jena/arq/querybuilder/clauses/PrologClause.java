@@ -26,10 +26,11 @@ import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 /**
- * Interface that defines the PrologClause as per 
+ * Interface that defines the PrologClause as per
  * http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rPrologue
- *
- * @param <T> The Builder type that the clause is part of.
+ * 
+ * @param <T>
+ *            The Builder type that the clause is part of.
  */
 public interface PrologClause<T extends AbstractQueryBuilder<T>> {
 	/**
@@ -39,45 +40,60 @@ public interface PrologClause<T extends AbstractQueryBuilder<T>> {
 
 	/**
 	 * Add a prefix.
-	 * @param pfx The prefix.
-	 * @param uri The URI for the prefix
+	 * 
+	 * @param pfx
+	 *            The prefix.
+	 * @param uri
+	 *            The URI for the prefix
 	 * @return The builder for chaining.
 	 */
 	public T addPrefix(String pfx, Resource uri);
 
 	/**
 	 * Add a prefix.
-	 * @param pfx The prefix.
-	 * @param uri The URI for the prefix
+	 * 
+	 * @param pfx
+	 *            The prefix.
+	 * @param uri
+	 *            The URI for the prefix
 	 * @return The builder for chaining.
 	 */
 	public T addPrefix(String pfx, Node uri);
 
 	/**
 	 * Add a prefix.
-	 * @param pfx The prefix.
-	 * @param uri The URI for the prefix
+	 * 
+	 * @param pfx
+	 *            The prefix.
+	 * @param uri
+	 *            The URI for the prefix
 	 * @return The builder for chaining.
 	 */
 	public T addPrefix(String pfx, String uri);
 
 	/**
 	 * Add a prefix.
-	 * @param prefixes A mapping of prefix to URI to add.
+	 * 
+	 * @param prefixes
+	 *            A mapping of prefix to URI to add.
 	 * @return The builder for chaining.
 	 */
 	public T addPrefixes(Map<String, String> prefixes);
 
 	/**
 	 * Set the base URI.
-	 * @param uri The base URI to use.
+	 * 
+	 * @param uri
+	 *            The base URI to use.
 	 * @return The builder for chaining.
 	 */
 	public T setBase(Object uri);
 
 	/**
 	 * Set the base URI.
-	 * @param uri The base URI to use.
+	 * 
+	 * @param uri
+	 *            The base URI to use.
 	 * @return The builder for chaining.
 	 */
 	public T setBase(String uri);

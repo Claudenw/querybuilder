@@ -102,7 +102,7 @@ public class ConstructBuilder extends AbstractQueryBuilder<ConstructBuilder>
 		datasetHandler.from(graphName);
 		return this;
 	}
-	
+
 	@Override
 	public ConstructBuilder from(Collection<String> graphName) {
 		datasetHandler.from(graphName);
@@ -170,7 +170,7 @@ public class ConstructBuilder extends AbstractQueryBuilder<ConstructBuilder>
 		whereHandler.addWhere(t);
 		return this;
 	}
-	
+
 	@Override
 	public ConstructBuilder addWhere(FrontsTriple t) {
 		whereHandler.addWhere(t.asTriple());
@@ -194,7 +194,7 @@ public class ConstructBuilder extends AbstractQueryBuilder<ConstructBuilder>
 		whereHandler.addOptional(t.asTriple());
 		return this;
 	}
-	
+
 	@Override
 	public ConstructBuilder addOptional(Object s, Object p, Object o) {
 		addOptional(new Triple(makeNode(s), makeNode(p), makeNode(o)));

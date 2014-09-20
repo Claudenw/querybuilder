@@ -18,96 +18,122 @@
 package org.apache.jena.arq.querybuilder.clauses;
 
 import org.apache.jena.arq.querybuilder.AbstractQueryBuilder;
-import org.apache.jena.arq.querybuilder.AskBuilder;
 import org.apache.jena.arq.querybuilder.SelectBuilder;
 import org.apache.jena.arq.querybuilder.handlers.WhereHandler;
 
 import com.hp.hpl.jena.graph.FrontsTriple;
-import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.sparql.lang.sparql_11.ParseException;
 
 /**
- * Interface that defines the WhereClause as per 
+ * Interface that defines the WhereClause as per
  * http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rWhereClause
- *
- * @param <T> The Builder type that the clause is part of.
+ * 
+ * @param <T>
+ *            The Builder type that the clause is part of.
  */
 public interface WhereClause<T extends AbstractQueryBuilder<T>> {
 
 	/**
 	 * Adds a triple as to the where clause.
-	 * @param t The triple to add
+	 * 
+	 * @param t
+	 *            The triple to add
 	 * @return The Builder for chaining.
 	 */
 	public T addWhere(Triple t);
 
 	/**
 	 * Adds a triple as to the where clause.
-	 * @param t The triple to add
+	 * 
+	 * @param t
+	 *            The triple to add
 	 * @return The Builder for chaining.
 	 */
 	public T addWhere(FrontsTriple t);
-	
+
 	/**
 	 * Adds a triple to the where clause.
-	 * @param s The subject.
-	 * @param p The predicate.
-	 * @param o The object.
+	 * 
+	 * @param s
+	 *            The subject.
+	 * @param p
+	 *            The predicate.
+	 * @param o
+	 *            The object.
 	 * @return The Builder for chaining.
 	 */
 	public T addWhere(Object s, Object p, Object o);
 
 	/**
 	 * Adds an optional triple as to the where clause.
-	 * @param t The triple to add
+	 * 
+	 * @param t
+	 *            The triple to add
 	 * @return The Builder for chaining.
 	 */
 	public T addOptional(Triple t);
 
 	/**
 	 * Adds an optional triple as to the where clause.
-	 * @param t The triple to add
+	 * 
+	 * @param t
+	 *            The triple to add
 	 * @return The Builder for chaining.
 	 */
 	public T addOptional(FrontsTriple t);
 
 	/**
 	 * Adds an optional triple to the where clause.
-	 * @param s The subject.
-	 * @param p The predicate.
-	 * @param o The object.
+	 * 
+	 * @param s
+	 *            The subject.
+	 * @param p
+	 *            The predicate.
+	 * @param o
+	 *            The object.
 	 * @return The Builder for chaining.
 	 */
 	public T addOptional(Object s, Object p, Object o);
 
 	/**
 	 * Adds a filter to the where clause
-	 * @param expression the expression to evaluate for the filter.
+	 * 
+	 * @param expression
+	 *            the expression to evaluate for the filter.
 	 * @return @return The Builder for chaining.
-	 * @throws ParseException If the expression can not be parsed.
+	 * @throws ParseException
+	 *             If the expression can not be parsed.
 	 */
 	public T addFilter(String expression) throws ParseException;
 
 	/**
 	 * Add a sub query.
-	 * @param subQuery The subquery as defined by a SelectBuilder.
+	 * 
+	 * @param subQuery
+	 *            The subquery as defined by a SelectBuilder.
 	 * @return This builder for chaining.
 	 */
 	public T addSubQuery(SelectBuilder subQuery);
 
 	/**
 	 * Add a union.
-	 * @param union The union as defined by a SelectBuilder.
+	 * 
+	 * @param union
+	 *            The union as defined by a SelectBuilder.
 	 * @return This builder for chaining.
 	 */
 	public T addUnion(SelectBuilder union);
-	
+
 	/**
 	 * Add a graph statement to the query as per
-	 * http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rGraphGraphPattern.
-	 * @param graph The iri or variable identifying the graph.
-	 * @param subQuery The graph to add.
+	 * http://www.w3.org/TR/2013/REC-sparql11
+	 * -query-20130321/#rGraphGraphPattern.
+	 * 
+	 * @param graph
+	 *            The iri or variable identifying the graph.
+	 * @param subQuery
+	 *            The graph to add.
 	 * @return This builder for chaining.
 	 */
 	public T addGraph(Object graph, SelectBuilder subQuery);

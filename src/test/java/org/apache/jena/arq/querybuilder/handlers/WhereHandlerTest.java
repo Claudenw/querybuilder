@@ -205,70 +205,71 @@ public class WhereHandlerTest extends AbstractHandlerTest {
 				+ CLOSE_CURLY + CLOSE_CURLY, query.toString());
 
 	}
-	
+
 	@Test
-	public void testSetVarsInTriple()
-	{
-		Var v = Var.alloc( "v");
+	public void testSetVarsInTriple() {
+		Var v = Var.alloc("v");
 		handler.addWhere(new Triple(NodeFactory.createURI("one"), NodeFactory
 				.createURI("two"), v));
 		assertContainsRegex(WHERE + OPEN_CURLY + node("one") + SPACE
 				+ node("two") + SPACE + var("v") + OPT_SPACE + DOT
 				+ CLOSE_CURLY, query.toString());
-		Map<Var,Node> values = new HashMap<Var,Node>();
-		values.put( v, NodeFactory.createURI("three"));
+		Map<Var, Node> values = new HashMap<Var, Node>();
+		values.put(v, NodeFactory.createURI("three"));
 		handler.setVars(values);
 		assertContainsRegex(WHERE + OPEN_CURLY + node("one") + SPACE
 				+ node("two") + SPACE + node("three") + OPT_SPACE + DOT
 				+ CLOSE_CURLY, query.toString());
 	}
-	
+
 	@Test
 	public void testSetVarsInFilter() throws ParseException {
 		handler.addFilter("?one < ?v");
 		assertContainsRegex(WHERE + OPEN_CURLY + "FILTER" + OPT_SPACE
-				+ OPEN_PAREN + var("one") + OPT_SPACE + LT + OPT_SPACE + var("v")
-				+ CLOSE_PAREN + CLOSE_CURLY, query.toString());
-		Map<Var,Node> values = new HashMap<Var,Node>();
+				+ OPEN_PAREN + var("one") + OPT_SPACE + LT + OPT_SPACE
+				+ var("v") + CLOSE_PAREN + CLOSE_CURLY, query.toString());
+		Map<Var, Node> values = new HashMap<Var, Node>();
 
-		values.put( Var.alloc("v"), NodeFactory.createLiteral(LiteralLabelFactory.create(10)));
+		values.put(Var.alloc("v"),
+				NodeFactory.createLiteral(LiteralLabelFactory.create(10)));
 		handler.setVars(values);
 		assertContainsRegex(WHERE + OPEN_CURLY + "FILTER" + OPT_SPACE
-				+ OPEN_PAREN + var("one") + OPT_SPACE + LT + OPT_SPACE + quote("10")+"\\^\\^"+node("http://www.w3.org/2001/XMLSchema#int")
-				+ CLOSE_PAREN + CLOSE_CURLY, query.toString());
-		
+				+ OPEN_PAREN + var("one") + OPT_SPACE + LT + OPT_SPACE
+				+ quote("10") + "\\^\\^"
+				+ node("http://www.w3.org/2001/XMLSchema#int") + CLOSE_PAREN
+				+ CLOSE_CURLY, query.toString());
+
 	}
-	
+
 	@Test
-	public void testSetVarsInOptional()
-	{
-		Var v = Var.alloc( "v");
-		handler.addOptional(new Triple(NodeFactory.createURI("one"), NodeFactory
-				.createURI("two"), v));
+	public void testSetVarsInOptional() {
+		Var v = Var.alloc("v");
+		handler.addOptional(new Triple(NodeFactory.createURI("one"),
+				NodeFactory.createURI("two"), v));
 		assertContainsRegex(WHERE + OPEN_CURLY + "OPTIONAL" + SPACE
 				+ OPEN_CURLY + node("one") + SPACE + node("two") + SPACE
 				+ var("v") + OPT_SPACE + DOT + CLOSE_CURLY + CLOSE_CURLY,
 				query.toString());
-		Map<Var,Node> values = new HashMap<Var,Node>();
-		values.put( v, NodeFactory.createURI("three"));
+		Map<Var, Node> values = new HashMap<Var, Node>();
+		values.put(v, NodeFactory.createURI("three"));
 		handler.setVars(values);
 		assertContainsRegex(WHERE + OPEN_CURLY + "OPTIONAL" + SPACE
 				+ OPEN_CURLY + node("one") + SPACE + node("two") + SPACE
 				+ node("three") + OPT_SPACE + DOT + CLOSE_CURLY + CLOSE_CURLY,
 				query.toString());
 	}
-	
+
 	@Test
 	public void testSetVarsInSubQuery() {
-		Var v = Var.alloc( "v");
+		Var v = Var.alloc("v");
 		SelectBuilder sb = new SelectBuilder();
-		sb.addPrefix("pfx", "uri").addWhere("<one>", "<two>", v );
+		sb.addPrefix("pfx", "uri").addWhere("<one>", "<two>", v);
 		handler.addSubQuery(sb);
 		assertContainsRegex(WHERE + OPEN_CURLY + node("one") + ".+"
 				+ node("two") + ".+" + var("v") + ".+" + CLOSE_CURLY,
 				query.toString());
-		Map<Var,Node> values = new HashMap<Var,Node>();
-		values.put( v, NodeFactory.createURI("three"));
+		Map<Var, Node> values = new HashMap<Var, Node>();
+		values.put(v, NodeFactory.createURI("three"));
 		handler.setVars(values);
 		assertContainsRegex(WHERE + OPEN_CURLY + node("one") + ".+"
 				+ node("two") + ".+" + node("three") + ".+" + CLOSE_CURLY,
@@ -277,19 +278,19 @@ public class WhereHandlerTest extends AbstractHandlerTest {
 
 	@Test
 	public void testSetVarsInUnion() {
-		Var v = Var.alloc( "v");
+		Var v = Var.alloc("v");
 		SelectBuilder sb = new SelectBuilder();
-		sb.addPrefix("pfx", "uri").addWhere("<one>", "<two>", v );
+		sb.addPrefix("pfx", "uri").addWhere("<one>", "<two>", v);
 		handler.addUnion(sb);
-		assertContainsRegex(WHERE + OPEN_CURLY + UNION + OPEN_CURLY+node("one") + ".+"
-				+ node("two") + ".+" + var("v") + ".+" + CLOSE_CURLY,
-				query.toString());
-		Map<Var,Node> values = new HashMap<Var,Node>();
-		values.put( v, NodeFactory.createURI("three"));
+		assertContainsRegex(WHERE + OPEN_CURLY + UNION + OPEN_CURLY
+				+ node("one") + ".+" + node("two") + ".+" + var("v") + ".+"
+				+ CLOSE_CURLY, query.toString());
+		Map<Var, Node> values = new HashMap<Var, Node>();
+		values.put(v, NodeFactory.createURI("three"));
 		handler.setVars(values);
-		assertContainsRegex(WHERE + OPEN_CURLY + UNION + OPEN_CURLY + node("one") + ".+"
-				+ node("two") + ".+" + node("three") + ".+" + CLOSE_CURLY,
-				query.toString());
+		assertContainsRegex(WHERE + OPEN_CURLY + UNION + OPEN_CURLY
+				+ node("one") + ".+" + node("two") + ".+" + node("three")
+				+ ".+" + CLOSE_CURLY, query.toString());
 	}
 
 }
