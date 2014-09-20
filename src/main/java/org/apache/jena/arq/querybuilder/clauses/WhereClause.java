@@ -55,6 +55,8 @@ public interface WhereClause<T extends AbstractQueryBuilder<T>> {
 	/**
 	 * Adds a triple to the where clause.
 	 * 
+	 * See {@link #makeNode} for conversion of the param values.
+	 * 
 	 * @param s
 	 *            The subject.
 	 * @param p
@@ -85,6 +87,8 @@ public interface WhereClause<T extends AbstractQueryBuilder<T>> {
 
 	/**
 	 * Adds an optional triple to the where clause.
+	 * 
+	 * See {@link #makeNode} for conversion of the param values.
 	 * 
 	 * @param s
 	 *            The subject.
@@ -129,6 +133,8 @@ public interface WhereClause<T extends AbstractQueryBuilder<T>> {
 	 * Add a graph statement to the query as per
 	 * http://www.w3.org/TR/2013/REC-sparql11
 	 * -query-20130321/#rGraphGraphPattern.
+	 * 
+	 * See {@link #makeNode} for conversion of the graph param.
 	 * 
 	 * @param graph
 	 *            The iri or variable identifying the graph.

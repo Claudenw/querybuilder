@@ -83,6 +83,9 @@ public interface PrologClause<T extends AbstractQueryBuilder<T>> {
 	/**
 	 * Set the base URI.
 	 * 
+	 * See {@link #makeNode} for conversion of the uri param. The resulting Node
+	 * must be a URI.
+	 * 
 	 * @param uri
 	 *            The base URI to use.
 	 * @return The builder for chaining.

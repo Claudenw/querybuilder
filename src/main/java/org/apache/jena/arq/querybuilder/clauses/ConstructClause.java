@@ -53,6 +53,8 @@ public interface ConstructClause<T extends AbstractQueryBuilder<T>> {
 	/**
 	 * Add a construct triple.
 	 * 
+	 * See {@link #makeNode} for conversion of the param values.
+	 * 
 	 * @param s
 	 *            The subject of the triple,
 	 * @param p

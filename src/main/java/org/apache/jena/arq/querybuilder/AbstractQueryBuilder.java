@@ -44,6 +44,7 @@ import com.hp.hpl.jena.graph.NodeFactory;
 import com.hp.hpl.jena.graph.impl.LiteralLabelFactory;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sparql.ARQInternalErrorException;
 import com.hp.hpl.jena.sparql.core.Var;
 import com.hp.hpl.jena.sparql.expr.ExprVar;
 import com.hp.hpl.jena.sparql.util.NodeFactoryExtra;
@@ -65,7 +66,16 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 	private Map<Var, Node> values;
 
 	/**
-	 * Make a Node from an object. Will return Node.ANY if object is null.
+	 * Make a Node from an object.
+	 * <ul>
+	 * <li>Will return Node.ANY if object is null.</li>
+	 * <li>Will return the enclosed Node from a FrontsNode</li>
+	 * <li>Will return the object if it is a Node.</li>
+	 * <li>Will call NodeFactoryExtra.parseNode() using the currently defined
+	 * prefixes if the object is a String</li>
+	 * <li>Will create a literal representation if the parseNode() fails or for
+	 * any other object type.</li>
+	 * </ul>
 	 * 
 	 * @param o
 	 *            The object to convert. (may be null)
@@ -95,14 +105,28 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 	}
 
 	/**
-	 * Make a Var from an object. Will return Var.ANON if object is null. Will
-	 * return null if the object is "*"
+	 * Make a Var from an object.
+	 * <ul>
+	 * <li>Will return Var.ANON if object is null.</li>
+	 * <li>Will return null if the object is "*" or Node_RuleVariable.WILD</li>
+	 * <li>Will return the object if it is a Var</li>
+	 * <li>Will return resolve FrontsNode to Node and then resolve to Var</li>
+	 * <li>Will return resolve Node if the Node implements Node_Variable,
+	 * otherwise throws an NotAVariableException (instance of
+	 * ARQInternalErrorException)</li>
+	 * <li>Will return ?x if object is "?x"</li>
+	 * <li>Will return ?x if object is "x"</li>
+	 * <li>Will return the enclosed Var of a ExprVar</li>
+	 * <li>For all other objects will return the "?" prefixed to the toString()
+	 * value.</li>
+	 * </ul>
 	 * 
 	 * @param o
 	 *            The object to convert.
 	 * @return the Var value.
+	 * @throws ARQInternalErrorException
 	 */
-	public Var makeVar(Object o) {
+	public Var makeVar(Object o) throws ARQInternalErrorException {
 		if (o == null) {
 			return Var.ANON;
 		}
@@ -158,8 +182,9 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 	 * query will be replaced with value. If value is null the replacement is
 	 * cleared.
 	 * 
-	 * @See makeVar();
-	 * @See makeNode();
+	 * See {@link #makeVar} for conversion of the var param. See
+	 * {@link #makeNode} for conversion of the value param.
+	 * 
 	 * @param var
 	 *            The variable to replace.
 	 * @param value
