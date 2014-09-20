@@ -32,8 +32,6 @@ produces `PREFIX foaf: http://xmlns.com/foaf/0.1/ SELECT * WHERE { ?s ?o ?p . ?s
 
 Prepared Statement Usage
 ========================
-**This usage is untested**
-
 
 The query builders have the ability to replace variables with other values.  This can be 
 
