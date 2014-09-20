@@ -24,15 +24,15 @@ import org.xenei.junit.contract.ContractSuite;
 import org.xenei.junit.contract.IProducer;
 
 @RunWith(ContractSuite.class)
-@ContractImpl(ConstructBuilder.class)
-public class ConstructBuilderTest {
+@ContractImpl(SelectBuilder.class)
+public class SelectBuilderContractTest {
 
 	// create the producer to inject
-	private IProducer<ConstructBuilder> producer = new IProducer<ConstructBuilder>() {
+	private IProducer<SelectBuilder> producer = new IProducer<SelectBuilder>() {
 
 		@Override
-		public ConstructBuilder newInstance() {
-			return new ConstructBuilder();
+		public SelectBuilder newInstance() {
+			return new SelectBuilder();
 		}
 
 		@Override
@@ -42,11 +42,11 @@ public class ConstructBuilderTest {
 
 	};
 
-	public ConstructBuilderTest() {
+	public SelectBuilderContractTest() {
 	}
 
 	@Contract.Inject
-	public IProducer<ConstructBuilder> getProducer() {
+	public IProducer<SelectBuilder> getProducer() {
 		return producer;
 	}
 

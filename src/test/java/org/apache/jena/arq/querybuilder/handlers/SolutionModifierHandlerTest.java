@@ -18,12 +18,18 @@
 package org.apache.jena.arq.querybuilder.handlers;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.jena.arq.querybuilder.handlers.SolutionModifierHandler;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
+import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.SortCondition;
 import com.hp.hpl.jena.sparql.core.Var;
@@ -147,6 +153,54 @@ public class SolutionModifierHandlerTest extends AbstractHandlerTest {
 		solutionModifier.setOffset(-1);
 		s = byLine(query.toString());
 		assertNotContainsRegex("OFFSET.*", s);
+	}
+	
+	@Test
+	public void testSetVarsGroupBy()
+	{
+		Var v = Var.alloc( "v");
+		solutionModifier.addGroupBy( v );
+		
+		String[] s = byLine(query.toString());
+		assertContainsRegex(GROUP_BY+var("v"), s);
+	
+		Map<Var,Node> values = new HashMap<Var,Node>();
+		values.put( v, Var.alloc( "v2" ));
+		solutionModifier.setVars(values);
+		s = byLine(query.toString());
+		assertContainsRegex(GROUP_BY+var("v2"), s);
+	}
+
+	@Test
+	public void testSetVarsHaving()
+	{
+		Var v = Var.alloc( "v");
+		solutionModifier.addHaving( v );
+		
+		String[] s = byLine(query.toString());
+		assertContainsRegex(HAVING+var("v"), s);
+	
+		Map<Var,Node> values = new HashMap<Var,Node>();
+		values.put( v, Var.alloc( "v2" ));
+		solutionModifier.setVars(values);
+		s = byLine(query.toString());
+		assertContainsRegex(HAVING+var("v2"), s);
+	}
+	
+	@Test
+	public void testSetVarsOrderBy()
+	{
+		Var v = Var.alloc( "v");
+		solutionModifier.addOrderBy( v );
+		
+		String[] s = byLine(query.toString());
+		assertContainsRegex(ORDER_BY+var("v"), s);
+	
+		Map<Var,Node> values = new HashMap<Var,Node>();
+		values.put( v, Var.alloc( "v2" ));
+		solutionModifier.setVars(values);
+		s = byLine(query.toString());
+		assertContainsRegex(ORDER_BY+var("v2"), s);
 	}
 
 }

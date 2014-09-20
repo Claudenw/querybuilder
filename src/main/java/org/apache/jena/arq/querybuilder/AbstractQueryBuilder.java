@@ -45,6 +45,7 @@ import com.hp.hpl.jena.graph.impl.LiteralLabelFactory;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.core.Var;
+import com.hp.hpl.jena.sparql.expr.ExprVar;
 import com.hp.hpl.jena.sparql.util.NodeFactoryExtra;
 
 /**
@@ -65,9 +66,9 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 
 	/**
 	 * Make a Node from an object. 
-	 * Will return null if object is null.
+	 * Will return Node.ANY if object is null.
 	 * @param o The object to convert. (may be null)
-	 * @return The Node value or null if param was null.
+	 * @return The Node value.
 	 */
 	public Node makeNode(Object o) {
 		if (o == null) {
@@ -91,6 +92,41 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 		}
 		return NodeFactory.createLiteral(LiteralLabelFactory.create(o));
 	}
+	
+	/**
+	 * Make a Var from an object.
+	 * Will return Var.ANON if object is null.
+	 * Will return null if the object is "*"
+	 * @param o The object to convert.
+	 * @return the Var value.
+	 */
+	public Var makeVar(Object o) {
+		if (o == null) {
+			return Var.ANON;
+		}
+		if (o instanceof Var)
+		{
+			return (Var) o;
+		}
+		Var retval = null;
+		if (o instanceof FrontsNode) {
+			retval = Var.alloc(((FrontsNode) o).asNode());
+		} else
+		if (o instanceof Node) {
+			retval = Var.alloc((Node) o);
+		} else
+		if (o instanceof ExprVar) {
+			retval = Var.alloc((ExprVar)o);
+		} else
+		{
+			retval = Var.alloc( Var.canonical( o.toString() ));
+		}
+		if ("*".equals( Var.canonical(retval.toString())))
+		{
+			return null;
+		}
+		return retval;
+	}
 
 	/**
 	 * Create a new query builder with query.
@@ -104,11 +140,40 @@ public abstract class AbstractQueryBuilder<T extends AbstractQueryBuilder<T>>
 	/**
 	 * Set a variable replacement. 
 	 * During build all instances of var in the query will be replaced with value.
+	 * If value is null the replacement is cleared.
 	 * @param var The variable to replace
-	 * @param value The value to replace it with.
+	 * @param value The value to replace it with or null to remove the replacement.
 	 */
 	public void setVar(Var var, Node value) {
-		values.put(var, value);
+		if (value == null)
+		{
+			values.remove(var);
+		}
+		else
+		{
+			values.put(var, value);
+		}
+	}
+	
+	/**
+	 * Set a variable replacement. 
+	 * During build all instances of var in the query will be replaced with value.
+	 * If value is null the replacement is cleared.
+	 * @See makeVar();
+	 * @See makeNode();
+	 * @param var The variable to replace.
+	 * @param value The value to replace it with or null to remove the replacement.
+	 */
+	public void setVar( Object var, Object value )
+	{
+		if (value == null)
+		{
+			setVar( makeVar( var ), null);
+		}
+		else
+		{
+			setVar( makeVar(var), makeNode( value ) );
+		}
 	}
 
 	@Override

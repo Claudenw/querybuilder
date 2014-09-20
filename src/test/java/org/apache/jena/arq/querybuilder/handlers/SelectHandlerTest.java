@@ -39,9 +39,9 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 	}
 
 	@Test
-	public void testAddVarString() {
+	public void testAddVar() {
 		Var v = Var.alloc("one");
-		handler.addVar("one");
+		handler.addVar(v);
 		VarExprList expr = query.getProject();
 		assertEquals(1, expr.size());
 		assertTrue(expr.contains(v));
@@ -49,7 +49,7 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 
 	@Test
 	public void testAddVarAsterisk() {
-		handler.addVar("*");
+		handler.addVar(null);
 		VarExprList expr = query.getProject();
 		assertEquals(0, expr.size());
 		assertTrue(query.isQueryResultStar());
@@ -57,23 +57,15 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 
 	@Test
 	public void testAddVarAfterAsterisk() {
-		handler.addVar("*");
-		handler.addVar("?x");
+		handler.addVar(null);
+		handler.addVar(Var.alloc("x"));
 		VarExprList expr = query.getProject();
 		assertEquals(1, expr.size());
 		assertFalse(query.isQueryResultStar());
 		assertTrue(expr.contains(Var.alloc("x")));
 	}
 
-	@Test
-	public void testAddVarNode() {
-		Var v = Var.alloc("one");
-		handler.addVar(NodeFactory.createVariable("one"));
-		VarExprList expr = query.getProject();
-		assertEquals(1, expr.size());
-		assertTrue(expr.contains(v));
-	}
-
+	
 	@Test
 	public void testAddVarVar() {
 		Var v = Var.alloc("one");
@@ -139,7 +131,7 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 	@Test
 	public void testAddAllResultStartReduced() {
 		SelectHandler sh = new SelectHandler(new Query());
-		sh.addVar("*");
+		sh.addVar( null );
 		sh.setReduced(true);
 
 		handler.addAll(sh);
@@ -150,7 +142,7 @@ public class SelectHandlerTest extends AbstractHandlerTest {
 	@Test
 	public void testAddAllVarsDistinct() {
 		SelectHandler sh = new SelectHandler(new Query());
-		sh.addVar("?foo");
+		sh.addVar( Var.alloc("foo"));
 		sh.setDistinct(true);
 
 		handler.addAll(sh);

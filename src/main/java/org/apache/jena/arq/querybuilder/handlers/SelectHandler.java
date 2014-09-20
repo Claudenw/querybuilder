@@ -50,21 +50,14 @@ public class SelectHandler implements Handler {
 		}
 	}
 
-	public void addVar(String var) {
-		if ("*".equals(var)) {
+	public void addVar(Var var) {
+		if (var == null)
+		{
 			query.setQueryResultStar(true);
 		} else {
 			query.setQueryResultStar(false);
 			query.addResultVar(var);
 		}
-	}
-
-	public void addVar(Var var) {
-		query.addResultVar(var);
-	}
-
-	public void addVar(Node var) {
-		query.addResultVar(var);
 	}
 
 	public List<Var> getVars() {
@@ -98,6 +91,10 @@ public class SelectHandler implements Handler {
 
 	@Override
 	public void build() {
+		if (query.getProject().getVars().isEmpty())
+		{
+			query.setQueryResultStar(true);
+		}
 		// handle the SELECT * case
 		query.getProjectVars();
 	}

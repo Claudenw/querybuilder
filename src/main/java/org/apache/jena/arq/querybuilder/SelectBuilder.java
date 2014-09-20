@@ -89,13 +89,7 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 
 	@Override
 	public SelectBuilder addVar(Object var) {
-		if (var instanceof String) {
-			selectHandler.addVar((String) var);
-		} else if (var instanceof Var) {
-			selectHandler.addVar((Var) var);
-		} else {
-			selectHandler.addVar(makeNode(var));
-		}
+		selectHandler.addVar( makeVar( var ));
 		return this;
 	}
 

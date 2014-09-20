@@ -18,14 +18,24 @@
 package org.apache.jena.arq.querybuilder.clauses;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.jena.arq.querybuilder.AbstractQueryBuilder;
 import org.apache.jena.arq.querybuilder.clauses.DatasetClause;
 import org.apache.jena.arq.querybuilder.handlers.DatasetHandler;
 import org.junit.After;
+import org.junit.Test;
 import org.xenei.junit.contract.Contract;
 import org.xenei.junit.contract.ContractTest;
 import org.xenei.junit.contract.IProducer;
+
+import com.hp.hpl.jena.graph.Node;
+import com.hp.hpl.jena.graph.NodeFactory;
+import com.hp.hpl.jena.sparql.core.Var;
 
 @Contract(DatasetClause.class)
 public class DatasetClauseTest<T extends DatasetClause<?>> extends
@@ -101,5 +111,46 @@ public class DatasetClauseTest<T extends DatasetClause<?>> extends
 		assertContains("FROM NAMED <name2>", s);
 		assertContains("FROM <name3>", s);
 	}
+	
+	@ContractTest
+	public void setVarsFromNamed() {
+		DatasetClause<?> datasetClause = getProducer().newInstance();
+		AbstractQueryBuilder<?> builder = datasetClause.fromNamed( "?foo");
+		datasetClause.from("?bar");
+		builder.setVar(Var.alloc("foo"),
+				NodeFactory.createURI("http://example.com/foo"));
+		
+		String s = builder.buildString();
+		assertTrue(s.contains("FROM NAMED <http://example.com/foo>"));
+		assertTrue(s.contains("FROM <?bar>"));
+	}
+
+	@ContractTest
+	public void setVarsFrom() {
+		DatasetClause<?> datasetClause = getProducer().newInstance();
+		AbstractQueryBuilder<?> builder = datasetClause.fromNamed("?foo");
+		datasetClause.from("?bar");
+		builder.setVar(Var.alloc("bar"),
+				NodeFactory.createURI("http://example.com/bar"));
+		
+		String s = builder.buildString();
+		assertTrue(s.contains("FROM NAMED <?foo>"));
+		assertTrue(s.contains("FROM <http://example.com/bar>"));
+	}
+
+	@ContractTest
+	public void setVarsBoth() {
+		DatasetClause<?> datasetClause = getProducer().newInstance();
+		AbstractQueryBuilder<?> builder = datasetClause.fromNamed("?foo");
+		datasetClause.from("?bar");
+		builder.setVar(Var.alloc("bar"),
+				NodeFactory.createURI("http://example.com/bar"));
+		builder.setVar(Var.alloc("foo"),
+				NodeFactory.createURI("http://example.com/foo"));
+		String s = builder.buildString();
+		assertTrue(s.contains("FROM NAMED <http://example.com/foo>"));
+		assertTrue(s.contains("FROM <http://example.com/bar>"));
+	}
+
 
 }

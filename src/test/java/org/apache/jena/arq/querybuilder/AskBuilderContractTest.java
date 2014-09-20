@@ -25,7 +25,7 @@ import org.xenei.junit.contract.IProducer;
 
 @RunWith(ContractSuite.class)
 @ContractImpl(AskBuilder.class)
-public class AskBuilderTest {
+public class AskBuilderContractTest {
 
 	// create the producer to inject
 	private IProducer<AskBuilder> producer = new IProducer<AskBuilder>() {
@@ -42,7 +42,7 @@ public class AskBuilderTest {
 
 	};
 
-	public AskBuilderTest() {
+	public AskBuilderContractTest() {
 	}
 
 	@Contract.Inject
