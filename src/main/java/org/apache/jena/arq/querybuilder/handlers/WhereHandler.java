@@ -88,10 +88,6 @@ public class WhereHandler implements Handler {
 		return e;
 	}
 
-	public void addWhere(FrontsTriple t) {
-		addWhere(t.asTriple());
-	}
-
 	private void testTriple(Triple t) {
 		// verify Triple is valid
 		boolean validSubject = t.getSubject().isURI()
@@ -149,10 +145,6 @@ public class WhereHandler implements Handler {
 			}
 
 		}
-	}
-
-	public void addOptional(FrontsTriple t) {
-		addOptional(t.asTriple());
 	}
 
 	public void addOptional(Triple t) {
@@ -226,10 +218,6 @@ public class WhereHandler implements Handler {
 			}
 		}
 		getClause().addElement(union);
-	}
-
-	public void addGraph(FrontsNode graph, WhereHandler subQuery) {
-		addGraph(graph.asNode(), subQuery);
 	}
 
 	public void addGraph(Node graph, WhereHandler subQuery) {

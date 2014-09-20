@@ -75,6 +75,14 @@ public class DatasetHandlerTest extends AbstractHandlerTest {
 	}
 
 	@Test
+	public void fromStringCollection() {
+		String[] names = { "foo", "bar" };
+		handler.from(Arrays.asList(names));
+		assertTrue(query.toString().contains("FROM <foo>"));
+		assertTrue(query.toString().contains("FROM <bar>"));
+	}
+
+	@Test
 	public void setVarsFromNamed() {
 		Map<Var, Node> values = new HashMap<Var, Node>();
 		handler.fromNamed("?foo");

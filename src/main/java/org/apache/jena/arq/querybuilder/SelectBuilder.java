@@ -197,7 +197,7 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 
 	@Override
 	public SelectBuilder addWhere(FrontsTriple t) {
-		whereHandler.addWhere(t);
+		whereHandler.addWhere(t.asTriple());
 		return this;
 	}
 	
@@ -215,7 +215,7 @@ public class SelectBuilder extends AbstractQueryBuilder<SelectBuilder>
 
 	@Override
 	public SelectBuilder addOptional(FrontsTriple t) {
-		whereHandler.addOptional(t);
+		whereHandler.addOptional(t.asTriple());
 		return this;
 	}
 	

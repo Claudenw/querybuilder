@@ -106,7 +106,7 @@ public class AskBuilder extends AbstractQueryBuilder<AskBuilder> implements
 
 	@Override
 	public AskBuilder addWhere(FrontsTriple t) {
-		whereHandler.addWhere(t);
+		whereHandler.addWhere(t.asTriple());
 		return this;
 	}
 	
@@ -124,7 +124,7 @@ public class AskBuilder extends AbstractQueryBuilder<AskBuilder> implements
 
 	@Override
 	public AskBuilder addOptional(FrontsTriple t) {
-		whereHandler.addOptional(t);
+		whereHandler.addOptional(t.asTriple());
 		return this;
 	}
 	@Override

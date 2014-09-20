@@ -199,7 +199,7 @@ public class ElementRewriter extends AbstractRewriter<Element> implements
 	@Override
 	public void visit(ElementSubQuery el) {
 		push(new ElementSubQuery(AbstractQueryBuilder.rewrite(
-				AbstractQueryBuilder.clone(el.getQuery()).cloneQuery(), values)));
+				AbstractQueryBuilder.clone(el.getQuery()), values)));
 	}
 
 }
