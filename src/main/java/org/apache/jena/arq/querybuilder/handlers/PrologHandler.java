@@ -36,7 +36,7 @@ public class PrologHandler implements Handler {
 
 	private String canonicalPfx(String x) {
 		if (x.endsWith(":"))
-			return x.substring(0, x.length() - 2);
+			return x.substring(0, x.length() - 1);
 		return x;
 	}
 

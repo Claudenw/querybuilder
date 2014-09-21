@@ -41,9 +41,16 @@ public class PrologHandlerTest extends AbstractHandlerTest {
 	public void testAddPrefixString() {
 		handler.addPrefix("pfx", "uri");
 		String[] lst = byLine(query.toString());
-		assertContainsRegex("PREFIX\\s+pfx:\\s+\\<uri\\>", lst);
+		assertContainsRegex(PREFIX+"pfx:"+SPACE+node("uri"), lst);
 	}
 
+	@Test
+	public void testAddPrefixStringWithColon() {
+		handler.addPrefix("pfx:", "uri");
+		String[] lst = byLine(query.toString());
+		assertContainsRegex(PREFIX+"pfx:"+SPACE+node("uri"), lst);
+	}
+	
 	@Test
 	public void testAddPrefixHandler() {
 		PrologHandler handler2 = new PrologHandler(new Query());
@@ -60,10 +67,21 @@ public class PrologHandlerTest extends AbstractHandlerTest {
 		map.put("pfx2", "uri2");
 		handler.addPrefixes(map);
 		String[] lst = byLine(query.toString());
-		assertContainsRegex("PREFIX\\s+pfx:\\s+\\<uri\\>", lst);
-		assertContainsRegex("PREFIX\\s+pfx2:\\s+\\<uri2\\>", lst);
+		assertContainsRegex(PREFIX+"pfx:"+SPACE+node("uri"), lst);
+		assertContainsRegex(PREFIX+"pfx2:"+SPACE+node("uri2"), lst);
 	}
 
+	@Test
+	public void testAddPrefixesWithColon() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("pfx:", "uri");
+		map.put("pfx2", "uri2");
+		handler.addPrefixes(map);
+		String[] lst = byLine(query.toString());
+		assertContainsRegex(PREFIX+"pfx:"+SPACE+node("uri"), lst);
+		assertContainsRegex(PREFIX+"pfx2:"+SPACE+node("uri2"), lst);
+	}
+	
 	@Test
 	public void testAddDuplicatePrefix() {
 		handler.addPrefix("pfx", "uri");
