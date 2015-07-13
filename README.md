@@ -1,6 +1,28 @@
 querybuilder
 ============
 
+*NOTICE*
+========
+
+QueryBuilder is now part of the <a href="https://jena.apache.org">Apache Jena</a> project and can be found within the jena-extracs package:
+
+* <a href="https://github.com/apache/jena/tree/master/jena-extras/jena-querybuilder">git</a> 
+* <a href="https://repository.apache.org/content/repositories/releases/org/apache/jena/jena-querybuilder">releases</a>
+* <a href="https://repository.apache.org/content/repositories/snapshots/org/apache/jena/jena-querybuilder">snapshots</a>
+* <a href="https://jena.apache.org/documentation/extras/querybuilder/index.html">documentation</a>
+
+Maven Info
+     <groupId>org.apache.jena</groupId>
+     <artifactId>jena-querybuilder</artifactId>
+
+
+All development has shifted to the Apache Jena project.  Please report issues and submit improvements there.
+
+-----------------------------------
+
+OLD DOCUMENTATION BELOW
+=======================
+
 Query Builder for Jena.  Implementations of Ask, Construct and Select builders that allow developers to create queries without resorting to StringBuilders or similar solutions.
 
 Each of the builders has a series of methods to define the query.  Each method returns the builder for easy chaing.  The  example:
